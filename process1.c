@@ -55,7 +55,7 @@ int main() {
         }
 
         // If the shared variable is 0, exit
-        if (*shared_var == 0) {
+        if (*shared_var == 0 && pid != -1) {
             printf("Process 1 is exiting because the shared variable is 0.\n");
             if (pid > 0) {
                 // Wait for Process 2 to finish if it was started
