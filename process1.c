@@ -29,10 +29,7 @@ int main(){
             // Start process 2
             pid = fork();
 
-            if (pid < 0){
-                perror("Unable to create process 2");
-                exit(-1);
-            } else if (pid == 0){
+            if (pid == 0){
                 // Child process 2
 
                 // Execute the process2 seperate program
@@ -40,7 +37,19 @@ int main(){
 
                 // If execl returns, then an error occured
                 perror("Failed to start Process 2");
-                exit(-1);
+                exit(1);
+            } else if (pid > 0){
+                // Parent process: Wait for process 2 to finish
+
+                int status;
+                waitpid(pid, &status, 0); // Waits for process 2 to terminate, we pass the pid of process 2.
+                printf("Process 2 has finished. Exiting Process 1.\n");
+                break; // Exit the loop to end Process 1
+            }
+            else{
+                // Fork failed
+                perror("Unable to create process 2");
+                exit(1);
             }
         }
 

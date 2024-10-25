@@ -9,10 +9,11 @@ void delay(int seconds){
 
 int main(){
 
-    while (1){
-        printf("I am process 2\n");
-        fflush(stdout);
-        delay(2);
+    for (int i = 0; i < 10; i++) // Display message 10 times
+    {
+        printf("I am process 2\n"); // Display message
+        fflush(stdout); // Force the output
+        delay(1); // Delay for 1 second
     }
 
     return 0;
