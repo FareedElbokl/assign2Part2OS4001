@@ -66,7 +66,7 @@ int main() {
             pid = fork();
             if (pid == 0) {
                 // Child process: execute a separate program for Process 2
-                execl("./process2", "process2", (char *)NULL);
+                execl("./Part_II_101256495_101261926_program2", "Part_II_101256495_101261926_program2", (char *)NULL);
                 // If execl returns, it means there was an error
                 perror("Failed to start Process 2");
                 exit(EXIT_FAILURE);
