@@ -13,7 +13,7 @@ int main(){
 
     srand(time(NULL)); // Seed the randomizer with the current time
 
-    pid_t pid;
+    pid_t pid = -1;
 
     while (1){
         int random_int = rand() % 11; // Generate rand num between 0 and 10
@@ -25,7 +25,7 @@ int main(){
             printf("Low value\n");
         }
 
-        if (random_int == 9){
+        if (random_int == 9 && pid == -1){
             // Start process 2
             pid = fork();
 
