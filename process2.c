@@ -14,7 +14,7 @@ int main() {
     int shmid, semid;
     int *shared_var;
 
-    // Access the shared memory segment
+    // Access the shared memory segment that was created in process 1
     shmid = shmget(key, sizeof(int), 0666);
     if (shmid < 0) {
         perror("shmget failed");
@@ -58,12 +58,12 @@ int main() {
 
 // Function to lock the semaphore (decrement)
 void sem_lock(int semid) {
-    struct sembuf sb = {0, -1, 0};
+    struct sembuf sb = {0, -1, 0}; // Specify that the operation is decrementing {semnum in semaphore set, sem op, sem flag}
     semop(semid, &sb, 1);
 }
 
 // Function to unlock the semaphore (increment)
 void sem_unlock(int semid) {
-    struct sembuf sb = {0, 1, 0};
+    struct sembuf sb = {0, 1, 0}; // Specify that the operation is incrementing
     semop(semid, &sb, 1);
 }

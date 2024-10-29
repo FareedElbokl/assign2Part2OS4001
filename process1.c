@@ -25,7 +25,7 @@ int main() {
     }
 
     // Attach the shared memory segment to the process's address space
-    shared_var = (int *)shmat(shmid, NULL, 0);
+    shared_var = (int *)shmat(shmid, NULL, 0); // pass in shmid, NULL to specify that we dont care where in the process' address space the shared mem is attached.
     if (shared_var == (int *)-1) {
         perror("shmat failed");
         exit(EXIT_FAILURE);
@@ -60,7 +60,7 @@ int main() {
         printf("I am Process 1. Generated value: %d\n", *shared_var);
         sem_unlock(semid); // Unlock the semaphore
 
-        // If the shared variable is 9, start Process 2
+        // If the shared variable is 9, start Process 2, assuming we have not yet started it already
         if (*shared_var == 9 && pid == -1) {
             printf("Starting Process 2...\n");
             pid = fork();
@@ -77,7 +77,7 @@ int main() {
             }
         }
 
-        // Lock the semaphore before checking the shared variable
+        // Lock the semaphore before checking the shared variable, to ensure the shared var is not modified
         sem_lock(semid);
         if (*shared_var == 0 && pid != -1) {
             printf("Process 1 is exiting because the shared variable is 0.\n");
@@ -94,7 +94,7 @@ int main() {
         sleep(1);
     }
 
-    // Detach and remove the shared memory segment
+    // Detach the shared mem from the process' address space and remove the shared mem segment
     shmdt(shared_var);
     shmctl(shmid, IPC_RMID, NULL);
 
@@ -112,6 +112,6 @@ void sem_lock(int semid) {
 
 // Function to unlock the semaphore (increment)
 void sem_unlock(int semid) {
-    struct sembuf sb = {0, 1, 0}; // Middle value specifies
+    struct sembuf sb = {0, 1, 0}; // {semnum in semaphore set, sem op, sem flag}
     semop(semid, &sb, 1);
 }
