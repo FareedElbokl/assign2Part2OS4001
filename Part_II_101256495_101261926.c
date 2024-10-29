@@ -60,7 +60,7 @@ int main() {
         printf("I am Process 1. Generated value: %d\n", *shared_var);
         sem_unlock(semid); // Unlock the semaphore
 
-        // If the shared variable is 9, start Process 2, assuming we have not yet started it already
+        // If the shared variable is 9, start Process 2, if we have not yet started it already
         if (*shared_var == 9 && pid == -1) {
             printf("Starting Process 2...\n");
             pid = fork();
